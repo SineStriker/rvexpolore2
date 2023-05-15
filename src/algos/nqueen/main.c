@@ -1,5 +1,4 @@
-#include <sys/syscall.h>
-#include <unistd.h>
+#include "my_syscall.h"
 
 #define N 8 // N代表皇后个数
 
@@ -41,45 +40,14 @@ void Nqueen(int j) {
     }
 }
 
-int num2str(char *buf, int n) {
-    int len = 0;
-    int num = n;
-    while (num > 0) {
-        len++;
-        num /= 10;
-    }
-    buf[len] = '\0';
-
-    int res = len;
-    num = n;
-    while (num > 0) {
-        buf[--len] = '0' + num % 10;
-        num /= 10;
-    }
-    return res;
-}
-
-ssize_t my_write(int fd, const void *buf, size_t size) {
-    ssize_t ret;
-    asm volatile("syscall"
-                 : "=a"(ret)
-                 //                 EDI      RSI       RDX
-                 : "0"(__NR_write), "D"(fd), "S"(buf), "d"(size)
-                 : "rcx", "r11", "memory");
-    return ret;
-}
-
 int main() {
     Nqueen(1);
 
-    // Convert to string
-    char msg[20];
-    int len = num2str(msg, count);
-    msg[len++] = '\n';
+    // print
+    print_num(count);
 
-    // write(STDOUT_FILENO, msg, len);
-    // syscall(SYS_write, STDOUT_FILENO, msg, len);
-    my_write(STDOUT_FILENO, msg, len);
+    // exit
+    my_exit(0);
 
     return 0;
 }

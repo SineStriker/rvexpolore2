@@ -18,22 +18,31 @@ void my_exit(int code);
 //=================================================================
 // Utils
 //=================================================================
+#pragma GCC push_options
+#pragma GCC optimize("O0")
 int num2str(char *buf, int n) {
     int len = 0;
-    int num = n;
 
+    int res = 0;
+    if (n < 0) {
+        n = -n;
+        buf[len++] = '-';
+    }
+
+    int num = n;
     while (num > 0) {
         len++;
         num /= 10;
     }
     buf[len] = '\0';
 
-    int res = len;
+    res = len;
     num = n;
     while (num > 0) {
         buf[--len] = '0' + num % 10;
         num /= 10;
     }
+
     return res;
 }
 
@@ -66,6 +75,7 @@ int read_num() {
     return res;
 }
 
+#pragma GCC pop_options
 
 
 //=================================================================
@@ -78,7 +88,8 @@ ssize_t my_read(int fd, void *buf, size_t size) {
                  : "=a"(ret)
                  //                 EDI      RSI       RDX
                  : "0"(__NR_read), "D"(fd), "S"(buf), "d"(size)
-                 : "rcx", "r11", "memory");
+                 //  : "rcx", "r11", "memory"
+    );
     return ret;
 }
 
@@ -88,7 +99,8 @@ ssize_t my_write(int fd, const void *buf, size_t size) {
                  : "=a"(ret)
                  //                 EDI      RSI       RDX
                  : "0"(__NR_write), "D"(fd), "S"(buf), "d"(size)
-                 : "rcx", "r11", "memory");
+                 //  : "rcx", "r11", "memory"
+    );
     return ret;
 }
 

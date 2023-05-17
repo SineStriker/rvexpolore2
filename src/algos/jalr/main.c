@@ -17,6 +17,9 @@ int main() {
             break;
         case 3:
             print_str("03\n");
+            print_str("04\n");
+            print_str("05\n");
+            print_str("06\n");
             break;
         case 4:
             t = 8;

@@ -1,6 +1,6 @@
 #include "my_syscall.h"
 
-#define N 8 // N代表皇后个数
+#define N 4       // N代表皇后个数
 
 int queen[N + 1]; // 表示皇后所在的位置，如queen[1]=2表示皇后在第一行第二列
 int count = 0;
@@ -9,7 +9,7 @@ inline int abs(int n) {
     return n >= 0 ? n : (-n);
 }
 
-int isQueen(int j) { // 判断该列能否放置皇后，能放返回1，不能返回0
+int isQueen(int j) {          // 判断该列能否放置皇后，能放返回1，不能返回0
     int i;
     for (i = 1; i < j; i++) { // 检查已经摆放好的皇后是否在同一列上或者在同一斜线上
         if (queen[i] == queen[j] || abs(queen[i] - queen[j]) == j - i) {
